@@ -1,0 +1,257 @@
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rimo: <http://w3id.org/RIMO#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+rimo:ActionsPerVisit a rimo:KPI ;
+    rimo:appliedTo rimo:Web_application ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/WebAnalyticsPlatform> ;
+    rimo:description "Average number of actions per visit"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:name "Actions per visit"@en ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/Network>,
+        <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:CitationDois a rimo:KPI ;
+    rimo:appliedTo rimo:Database_portal ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/GoogleScholar>,
+        <http://w3id.org/RIMO#tool/Openalex> ;
+    rimo:description "Sear for specific DOIs"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:name "Citation DOIs"@en ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/Network>,
+        <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:Citations a rimo:KPI ;
+    rimo:appliedTo rimo:Database_portal,
+        rimo:Desktop_application,
+        rimo:Helpdesk,
+        rimo:Library,
+        rimo:Web_API,
+        rimo:Web_application,
+        rimo:Workflow ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/GoogleScholar>,
+        <http://w3id.org/RIMO#tool/Openalex> ;
+    rimo:description "number of citations of the publication(s) describing the service"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:mandatoryFor rimo:Database_portal,
+        rimo:Desktop_application,
+        rimo:Helpdesk,
+        rimo:Web_application,
+        rimo:Workflow ;
+    rimo:name "Citations"@en ;
+    rimo:recommendedFor rimo:Library,
+        rimo:Web_API ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/FundingAgency>,
+        <http://w3id.org/RIMO#agent/Network>,
+        <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:Downloads a rimo:KPI ;
+    rimo:appliedTo rimo:Database_portal,
+        rimo:Desktop_application,
+        rimo:Library,
+        rimo:Web_API ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/WebAnalyticsPlatform> ;
+    rimo:description "number of downloaded datasets"@en,
+        "number of software downloads"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:mandatoryFor rimo:Desktop_application,
+        rimo:Library,
+        rimo:Web_API ;
+    rimo:name "Downloads"@en ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/FundingAgency>,
+        <http://w3id.org/RIMO#agent/Network>,
+        <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:DownloadsDistinctIps a rimo:KPI ;
+    rimo:appliedTo rimo:Desktop_application ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/WebAnalyticsPlatform> ;
+    rimo:description "number of software downloads from year-wise distinct IPs"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:name "Downloads distinct IPs"@en ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/Network>,
+        <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:Executions a rimo:KPI ;
+    rimo:appliedTo rimo:Desktop_application,
+        rimo:Workflow ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/WebAnalyticsPlatform> ;
+    rimo:description "number of executions of the software"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:mandatoryFor rimo:Workflow ;
+    rimo:name "Executions"@en ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/FundingAgency>,
+        <http://w3id.org/RIMO#agent/Network>,
+        <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:GrantApplications a rimo:KPI ;
+    rimo:appliedTo rimo:Library,
+        rimo:Web_API ;
+    rimo:description "number of grant applications related to the service"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:name "Grant applications"@en ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/Network>,
+        <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:Hits a rimo:KPI ;
+    rimo:appliedTo rimo:Database_portal ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/WebAnalyticsPlatform> ;
+    rimo:description "number of hits without robots"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:name "Hits"@en ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/Network>,
+        <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:Pageviews a rimo:KPI ;
+    rimo:appliedTo rimo:Web_application ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/WebAnalyticsPlatform> ;
+    rimo:description "number of times a page has been viewed"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:name "Pageviews"@en ;
+    rimo:recommendedFor rimo:Web_application ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:Projects a rimo:KPI ;
+    rimo:appliedTo rimo:Workflow ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/WebAnalyticsPlatform> ;
+    rimo:description "number of projects related to the service"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:name "Projects"@en ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/Network>,
+        <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:Publications a rimo:KPI ;
+    rimo:appliedTo rimo:Database_portal,
+        rimo:Helpdesk,
+        rimo:Library,
+        rimo:Web_API ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/WebAnalyticsPlatform> ;
+    rimo:description "number of publications as first and co-author in peer reviewed journals describing the database"@en,
+        "number of publications with explicit mention of de.NBI-staff/de.NBI service in the acknowledgements section or where de.NBI staff is included in author list and de.NBI is mentioned explicitely"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:name "Publications"@en ;
+    rimo:recommendedFor rimo:Database_portal,
+        rimo:Helpdesk,
+        rimo:Library,
+        rimo:Web_API ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:RecurringUsersVisitors a rimo:KPI ;
+    rimo:appliedTo rimo:Database_portal ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/WebAnalyticsPlatform> ;
+    rimo:description "number of unique users without robots"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:name "Recurring users/visitors"@en ;
+    rimo:recommendedFor rimo:Database_portal ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:StorageUsage a rimo:KPI ;
+    rimo:appliedTo rimo:Workflow ;
+    rimo:description "amount of storage used by the service"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:name "Storage usage"@en ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/Network>,
+        <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:SupportTickets a rimo:KPI ;
+    rimo:appliedTo rimo:Database_portal,
+        rimo:Desktop_application,
+        rimo:Helpdesk,
+        rimo:Library,
+        rimo:Web_API,
+        rimo:Web_application ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/TicketSystem> ;
+    rimo:description "number of unique user requets regarding the service"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:mandatoryFor rimo:Helpdesk ;
+    rimo:name "Support tickets"@en ;
+    rimo:recommendedFor rimo:Database_portal,
+        rimo:Desktop_application,
+        rimo:Library,
+        rimo:Web_API ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/FundingAgency>,
+        <http://w3id.org/RIMO#agent/Network>,
+        <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:UniqueUsersVisitors a rimo:KPI ;
+    rimo:appliedTo rimo:Database_portal ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/WebAnalyticsPlatform> ;
+    rimo:description "number of unique users without robots"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:name "Unique users/visitors"@en ;
+    rimo:recommendedFor rimo:Database_portal ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:Users a rimo:KPI ;
+    rimo:appliedTo rimo:Desktop_application,
+        rimo:Web_application,
+        rimo:Workflow ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/WebAnalyticsPlatform> ;
+    rimo:description "number of registered users"@en,
+        "yearly number of distinct IPs from \"phoning home\""@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:name "Users"@en ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/Network>,
+        <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:VisitDurations a rimo:KPI ;
+    rimo:appliedTo rimo:Web_application ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/WebAnalyticsPlatform> ;
+    rimo:description "average duration of the visits (session time)"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:name "Visit durations"@en ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/Network>,
+        <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:Visitors a rimo:KPI ;
+    rimo:appliedTo rimo:Web_application ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/WebAnalyticsPlatform> ;
+    rimo:description "number of unique visitors"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:mandatoryFor rimo:Web_application ;
+    rimo:name "Visitors"@en ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/FundingAgency>,
+        <http://w3id.org/RIMO#agent/Network>,
+        <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+rimo:Visits a rimo:KPI ;
+    rimo:appliedTo rimo:Database_portal,
+        rimo:Web_application ;
+    rimo:canBeAutomatedBy <http://w3id.org/RIMO#tool/WebAnalyticsPlatform> ;
+    rimo:description "number of visitors without robots"@en,
+        "number of visits of all visitors (default 30 min session)"@en ;
+    rimo:isQualitativeIndicator false ;
+    rimo:mandatoryFor rimo:Database_portal ;
+    rimo:name "Visits"@en ;
+    rimo:recommendedFor rimo:Web_application ;
+    rimo:requestedBy <http://w3id.org/RIMO#agent/FundingAgency>,
+        <http://w3id.org/RIMO#agent/Network>,
+        <http://w3id.org/RIMO#agent/ServiceProvider> .
+
+<http://w3id.org/RIMO-data> a owl:Ontology ;
+    dct:title "RIMO KPI Instances"@en ;
+    owl:imports <http://w3id.org/RIMO> .
+
+<http://w3id.org/RIMO#tool/TicketSystem> a rimo:AutomationTool ;
+    rdfs:label "Ticket System" .
+
+<http://w3id.org/RIMO#tool/GoogleScholar> a rimo:AutomationTool ;
+    rdfs:label "Google Scholar" .
+
+<http://w3id.org/RIMO#tool/Openalex> a rimo:AutomationTool ;
+    rdfs:label "OpenAlex" .
+
+<http://w3id.org/RIMO#agent/FundingAgency> a foaf:Agent ;
+    rdfs:label "Funding Agency" .
+
+<http://w3id.org/RIMO#tool/WebAnalyticsPlatform> a rimo:AutomationTool ;
+    rdfs:label "Web Analytics Platform" .
+
+<http://w3id.org/RIMO#agent/Network> a foaf:Agent ;
+    rdfs:label "Network" .
+
+<http://w3id.org/RIMO#agent/ServiceProvider> a foaf:Agent ;
+    rdfs:label "Service Provider" .
+

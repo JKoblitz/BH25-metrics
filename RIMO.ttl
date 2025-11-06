@@ -1,89 +1,62 @@
-@prefix dct: <http://purl.org/dc/terms/> .
-@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix rimo: <https://w3id.org/RIMO/> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rimo:  <http://w3id.org/RIMO#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix sosa:  <http://www.w3.org/ns/sosa/> .
+@prefix schema: <http://schema.org/> .
+@prefix uo:    <http://purl.obolibrary.org/obo/UO_> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix edam:  <http://edamontology.org/> .
 
-rimo:Indicator a rdfs:Class ;
-    rdfs:label "KPI Indicator"@en .
 
-rimo:ServiceCategory a rdfs:Class ;
-    rdfs:label "Service Category"@en .
-
-<https://w3id.org/RIMO> a owl:Ontology ;
-    dct:contributor "BioHackathon Europe 2025 KPI Monitoring Team"@en ;
-    dct:creator "Julia Koblitz (Leibniz Institute DSMZ)"@en ;
+<http://w3id.org/RIMO> a owl:Ontology ;
+    dct:contributor "BioHackathon Europe 2025 METRICS Team"@en ;
+    dct:creator "Julia Koblitz"@en ;
     dct:description """An ontology for representing and harmonising Key Performance Indicators across research infrastructures 
 and life science services. It defines classes and properties to describe indicators, measurement methods, relevance, 
-and applicable service categories. Developed during the BioHackathon Europe 2025."""@en ;
+and applicable service categories. First developed during the BioHackathon Europe 2025."""@en ;
     dct:issued "2025-11-05"^^xsd:date ;
     dct:language "en" ;
-    dct:license <https://creativecommons.org/licenses/by/4.0/> ;
-    dct:title "Research Infrastructure Monitoring Ontology (RIMO)"@en ;
-    rdfs:seeAlso <https://github.com/elixir-europe/biohackathon-kpi> ;
-    owl:versionInfo "0.1.0" .
+    dct:license <http://creativecommons.org/licenses/by/4.0/> ;
+    dct:title "Research Infrastructure Metrics Ontology (RIMO)"@en ;
+    owl:versionInfo "0.2.0" .
 
-rimo:Actions_per_visit a rimo:Indicator ;
-    rdfs:label "Actions per visit"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "Average number of actions per visit" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory "Optional" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Web_application" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Network",
-        "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
+### Core classes
+rimo:KPI              a owl:Class ; rdfs:label "KPI"@en .
+rimo:KPIValue         a owl:Class ; rdfs:label "KPI value"@en .
+rimo:ServiceCategory     a owl:Class ; rdfs:label "Service Category"@en ; rdfs:comment "Aligned to bio.tools toolType / EDAM where possible."@en .
+rimo:MeasurementMeans a owl:Class ; rdfs:label "Means of Measurement"@en ; rdfs:subClassOf sosa:Procedure .
+rimo:AutomationTool   a owl:Class ; rdfs:label "Automation Tool"@en ; rdfs:subClassOf schema:SoftwareApplication .
 
-rimo:Bioconductor a foaf:Agent ;
-    rdfs:label "Bioconductor"@en ;
-    rdfs:comment "An open-source software project for the analysis and comprehension of genomic data."@en .
+### Annotations on KPI (from your sheet)
+rimo:KPIName        a owl:AnnotationProperty ; rdfs:subPropertyOf rdfs:label .
+rimo:KPIDescription a owl:AnnotationProperty ; rdfs:subPropertyOf rdfs:comment .
+rimo:KPIExample     a owl:AnnotationProperty ; rdfs:subPropertyOf skos:example .
 
+### Object properties
+rimo:measuredBy          a owl:ObjectProperty ; rdfs:domain rimo:KPI ; rdfs:range rimo:MeasurementMeans ; rdfs:label "measured by"@en .
+rimo:canBeAutomatedBy    a owl:ObjectProperty ; rdfs:domain rimo:KPI ; rdfs:range rimo:AutomationTool ; rdfs:label "can be automated by"@en .
+rimo:appliedTo              a owl:ObjectProperty ; rdfs:domain rimo:KPI ; rdfs:range rimo:ServiceCategory ; rdfs:label "used by (tool category)"@en .
+rimo:mandatoryFor        a owl:ObjectProperty ; rdfs:subPropertyOf rimo:appliedTo ; rdfs:label "mandatory for"@en .
+rimo:recommendedFor      a owl:ObjectProperty ; rdfs:subPropertyOf rimo:appliedTo ; rdfs:label "recommended for"@en .
+rimo:requestedBy         a owl:ObjectProperty ; rdfs:domain rimo:KPI ; rdfs:range foaf:Agent ; rdfs:label "requested by"@en .
+rimo:hasValue            a owl:ObjectProperty ; rdfs:domain rimo:KPI ; rdfs:range  rimo:KPIValue ; rdfs:label "has value"@en .
+rimo:hasUnit             a owl:ObjectProperty ; rdfs:domain rimo:KPIValue ; rdfs:range  uo: ; rdfs:label "has unit"@en .
+
+### Datatype properties
+rimo:isQualitativeIndicator a owl:DatatypeProperty ;
+  rdfs:domain rimo:KPI ; rdfs:range xsd:boolean ; rdfs:label "is qualitative indicator"@en .
+
+### Service Categories
 rimo:Bioinformatics_portal a rimo:ServiceCategory ;
     rdfs:label "Bioinformatics portal"@en ;
     rdfs:comment "web site providing a platform/portal to multiple resources used for research in a focused area, including biological databases, web applications, training resources and so on."@en .
 
-rimo:Citation_DOIs a rimo:Indicator ;
-    rdfs:label "Citation DOIs"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "Sear for specific DOIs" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory "Optional" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Database_portal" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Network",
-        "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
-
-rimo:Citations a rimo:Indicator ;
-    rdfs:label "Citations"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "number of cirations of the  publication(s) describing the service" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory false,
-        "No" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Database_portal",
-        "https://w3id.org/RIMO/Desktop_application",
-        "https://w3id.org/RIMO/Helpdesk",
-        "https://w3id.org/RIMO/Library",
-        "https://w3id.org/RIMO/Web_API",
-        "https://w3id.org/RIMO/Web_application",
-        "https://w3id.org/RIMO/Workflow" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Funding_Agency",
-        "https://w3id.org/RIMO/Network",
-        "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
-
-rimo:Command-line_tool a rimo:ServiceCategory ;
+rimo:Commandline_tool a rimo:ServiceCategory ;
     rdfs:label "Command-line tool"@en ;
     rdfs:comment "A tool with a text-based (command-line) interface."@en .
-
-rimo:Custom_scripts a foaf:Agent ;
-    rdfs:label "Custom scripts"@en ;
-    rdfs:comment "User-defined scripts created for specific tasks or analyses."@en .
 
 rimo:Database_portal a rimo:ServiceCategory ;
     rdfs:label "Database portal"@en ;
@@ -93,165 +66,21 @@ rimo:Desktop_application a rimo:ServiceCategory ;
     rdfs:label "Desktop application"@en ;
     rdfs:comment "A tool with a graphical user interface that runs on your desktop environment, e.g. on a PC or mobile device."@en .
 
-rimo:Downloads a rimo:Indicator ;
-    rdfs:label "Downloads"@en,
-        "Downloads "@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "number of downloaded datasets",
-        "number of software downloads" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory false,
-        "Optional" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Database_portal",
-        "https://w3id.org/RIMO/Desktop_application",
-        "https://w3id.org/RIMO/Library",
-        "https://w3id.org/RIMO/Web_API" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Funding_Agency",
-        "https://w3id.org/RIMO/Network",
-        "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
-
-rimo:Downloads_distinct_IPs a rimo:Indicator ;
-    rdfs:label "Downloads distinct IPs"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "number of software downloads  from year-wise distinct IPs" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory "Optional" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Desktop_application" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Network",
-        "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
-
-rimo:End_User a foaf:Group ;
-    rdfs:label "End User"@en ;
-    rdfs:comment "The individual or group that ultimately uses or is intended to use a product or service."@en .
-
-rimo:Executions a rimo:Indicator ;
-    rdfs:label "Executions"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "number of executions of the software" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory false,
-        "Optional" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Desktop_application",
-        "https://w3id.org/RIMO/Workflow" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Funding_Agency",
-        "https://w3id.org/RIMO/Network",
-        "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
-
-rimo:Funding_Agency a foaf:Group ;
-    rdfs:label "Funding Agency"@en ;
-    rdfs:comment "An organization that provides funding for research activities."@en .
-
-rimo:Galaxy a foaf:Agent ;
-    rdfs:label "Galaxy"@en ;
-    rdfs:comment "An open, web-based platform for data-intensive biomedical research."@en .
-
-rimo:GitHub a foaf:Agent ;
-    rdfs:label "GitHub"@en ;
-    rdfs:comment "A web-based platform used for version control and collaborative software development."@en .
-
-rimo:Grant_applications a rimo:Indicator ;
-    rdfs:label "Grant applications"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "number of grant applications  related to the service" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory "Optional" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Library",
-        "https://w3id.org/RIMO/Web_API" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Network",
-        "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
-
 rimo:Helpdesk a rimo:ServiceCategory ;
     rdfs:label "Helpdesk"@en ;
     rdfs:comment "A service providing assistance with the use of bioinformatics tools, data resources, or any other aspect of bioinformatics."@en .
-
-rimo:Hits a rimo:Indicator ;
-    rdfs:label "Hits"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "number of hits without robots" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory "Optional" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Database_portal" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Network",
-        "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
 
 rimo:Library a rimo:ServiceCategory ;
     rdfs:label "Library"@en ;
     rdfs:comment "A collection of components that are used to construct other tools. bio.tools scope includes component libraries performing high-level bioinformatics functions but excludes lower-level programming libraries."@en .
 
-rimo:Network a foaf:Group ;
-    rdfs:label "Network"@en ;
-    rdfs:comment "A group or system of interconnected people or organizations that collaborate or share resources."@en .
-
 rimo:Ontology a rimo:ServiceCategory ;
     rdfs:label "Ontology"@en ;
     rdfs:comment "A collection of information about concepts, including terms, synonyms, descriptions etc."@en .
 
-rimo:OpenAlex a foaf:Agent ;
-    rdfs:label "OpenAlex"@en ;
-    rdfs:comment "An open catalog of the global research system, including publications, authors, institutions, and more."@en .
-
-rimo:Pageviews a rimo:Indicator ;
-    rdfs:label "Pageviews"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "number of times a page has been viewed" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory "No" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Web_application" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
-
-rimo:Plug-in a rimo:ServiceCategory ;
+rimo:Plugin a rimo:ServiceCategory ;
     rdfs:label "Plug-in"@en ;
     rdfs:comment "A software component encapsulating a set of related functions, which are not standalone, i.e. depend upon other software for its use, e.g. a Javascript widget, or a plug-in, extension add-on etc. that extends the function of some existing tool."@en .
-
-rimo:Projects a rimo:Indicator ;
-    rdfs:label "Projects"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "number of projects related to the service" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory "Optional" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Workflow" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Network",
-        "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
-
-rimo:Publications a rimo:Indicator ;
-    rdfs:label "Publications"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "number of publications as first and co-author in peer reviewed journals describing the database",
-        "number of publications with explicit mention of  de.NBI-staff/de.NBI service in the acknowledgements section  or where de.NBI staff is included in author list  and de.NBI is mentioned explicitely" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory "No" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Database_portal",
-        "https://w3id.org/RIMO/Helpdesk",
-        "https://w3id.org/RIMO/Library",
-        "https://w3id.org/RIMO/Web_API" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
-
-rimo:Recurring_users_visitors a rimo:Indicator ;
-    rdfs:label "Recurring users/visitors"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "number of unique users without robots" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory "No" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Database_portal" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
 
 rimo:SPARQL_endpoint a rimo:ServiceCategory ;
     rdfs:label "SPARQL endpoint"@en ;
@@ -261,116 +90,9 @@ rimo:Script a rimo:ServiceCategory ;
     rdfs:label "Script"@en ;
     rdfs:comment "A tool written for some run-time environment (e.g. other applications or an OS shell) that automates the execution of tasks. Often a small program written in a general-purpose languages (e.g. Perl, Python) or some domain-specific languages (e.g. sed)."@en .
 
-rimo:Service_Provider a foaf:Group ;
-    rdfs:label "Service Provider"@en ;
-    rdfs:comment "An organization or individual that offers services to users or clients."@en .
-
-rimo:Storage_usage a rimo:Indicator ;
-    rdfs:label "Storage usage"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "amount of storage used by the service" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory "Optional" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Workflow" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Network",
-        "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
-
 rimo:Suite a rimo:ServiceCategory ;
     rdfs:label "Suite"@en ;
     rdfs:comment "A collection of tools which are bundled together into a convenient toolkit. Such tools typically share related functionality, a common user interface and can exchange data conveniently. This includes collections of stand-alone command-line tools, or Web applications within a common portal."@en .
-
-rimo:Support_tickets a rimo:Indicator ;
-    rdfs:label "Support tickets "@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "number of unique user requets regarding the service" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory false,
-        "No",
-        "Optional" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Database_portal",
-        "https://w3id.org/RIMO/Desktop_application",
-        "https://w3id.org/RIMO/Helpdesk",
-        "https://w3id.org/RIMO/Library",
-        "https://w3id.org/RIMO/Web_API",
-        "https://w3id.org/RIMO/Web_application" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Funding_Agency",
-        "https://w3id.org/RIMO/Network",
-        "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
-
-rimo:Technical a foaf:Group ;
-    rdfs:label "Technical"@en ;
-    rdfs:comment "Individuals or teams responsible for the technical aspects of service delivery, including maintenance and support."@en .
-
-rimo:Unique_users_visitors a rimo:Indicator ;
-    rdfs:label "Unique users/visitors"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "number of unique users without robots" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory "No" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Database_portal" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
-
-rimo:Users a rimo:Indicator ;
-    rdfs:label "Users"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "number of registered users",
-        "yearly number of distinct IPs from \"phoning home\"" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory "Optional" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Desktop_application",
-        "https://w3id.org/RIMO/Web_application",
-        "https://w3id.org/RIMO/Workflow" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Network",
-        "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
-
-rimo:Visit_durations a rimo:Indicator ;
-    rdfs:label "Visit durations"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "average duration of the visits (session time)" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory "Optional" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Web_application" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Network",
-        "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
-
-rimo:Visitors a rimo:Indicator ;
-    rdfs:label "Visitors"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "number of unique visitors" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory false ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Web_application" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Funding_Agency",
-        "https://w3id.org/RIMO/Network",
-        "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
-
-rimo:Visits a rimo:Indicator ;
-    rdfs:label "Visits"@en ;
-    rimo:automationTool rimo:Google_Analytics,
-        rimo:Matomo ;
-    rimo:description "number of visitors without robots",
-        "number of visits of all visitors (default 30 min session)" ;
-    rimo:indicatorSet "ELIXIR-DE" ;
-    rimo:mandatory false,
-        "No" ;
-    rimo:serviceCategory "https://w3id.org/RIMO/Database_portal",
-        "https://w3id.org/RIMO/Web_application" ;
-    rimo:targetGroup "https://w3id.org/RIMO/Funding_Agency",
-        "https://w3id.org/RIMO/Network",
-        "https://w3id.org/RIMO/Service_Provider" ;
-    rimo:valueType "http://purl.obolibrary.org/obo/PATO_0103000" .
 
 rimo:Web_API a rimo:ServiceCategory ;
     rdfs:label "Web API"@en ;
@@ -391,45 +113,3 @@ rimo:Workbench a rimo:ServiceCategory ;
 rimo:Workflow a rimo:ServiceCategory ;
     rdfs:label "Workflow"@en ;
     rdfs:comment "A set of tools which have been composed together into a pipeline of some sort. Such tools are (typically) standalone, but are composed for convenience, for instance for batch execution via some workflow engine or script."@en .
-
-rimo:automationTool a rdf:Property ;
-    rdfs:label "Automationtool"@en .
-
-rimo:description a rdf:Property ;
-    rdfs:label "Description"@en .
-
-rimo:example a rdf:Property ;
-    rdfs:label "Example"@en .
-
-rimo:indicatorSet a rdf:Property ;
-    rdfs:label "Indicatorset"@en .
-
-rimo:link a rdf:Property ;
-    rdfs:label "Link"@en .
-
-rimo:mandatory a rdf:Property ;
-    rdfs:label "Mandatory"@en .
-
-rimo:measurement a rdf:Property ;
-    rdfs:label "Measurement"@en .
-
-rimo:serviceCategory a rdf:Property ;
-    rdfs:label "Servicecategory"@en .
-
-rimo:source a rdf:Property ;
-    rdfs:label "Source"@en .
-
-rimo:targetGroup a rdf:Property ;
-    rdfs:label "Targetgroup"@en .
-
-rimo:valueType a rdf:Property ;
-    rdfs:label "Valuetype"@en .
-
-rimo:Google_Analytics a foaf:Agent ;
-    rdfs:label "Google Analytics"@en ;
-    rdfs:comment "A web analytics service offered by Google that tracks and reports website traffic."@en .
-
-rimo:Matomo a foaf:Agent ;
-    rdfs:label "Matomo"@en ;
-    rdfs:comment "An open-source web analytics platform."@en .
-

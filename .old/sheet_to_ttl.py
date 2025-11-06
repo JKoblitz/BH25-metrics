@@ -10,7 +10,7 @@ This script:
 
 import pandas as pd
 from rdflib import Graph, Namespace, Literal, RDF, URIRef
-from rdflib.namespace import RDFS, DCTERMS, XSD, FOAF, OWL
+from rdflib.namespace import RDFS, DCTERMS, XSD, FOAF, OWL, SKOS
 
 
 # === CONFIGURATION ===
@@ -22,6 +22,7 @@ BASE = Namespace("https://w3id.org/RIMO/")
 PATO = Namespace("http://purl.obolibrary.org/obo/PATO_")
 EDAM = Namespace("http://edamontology.org/")
 NCIT = Namespace("http://purl.obolibrary.org/obo/NCIT_")
+OBO  = Namespace("http://purl.obolibrary.org/obo/")  # for EVALO
 
 # Initialize RDF graph
 g = Graph()
@@ -34,6 +35,7 @@ g.bind("pato", PATO)
 g.bind("edam", EDAM)
 g.bind("ncit", NCIT)
 g.bind("owl", OWL)
+g.bind("obo", OBO)
 
 # === ADD ONTOLOGY METADATA ===
 ontology_uri = URIRef("https://w3id.org/RIMO")
@@ -62,6 +64,14 @@ g.add((BASE.Indicator, RDFS.label, Literal("KPI Indicator", lang="en")))
 g.add((BASE.ServiceCategory, RDF.type, RDFS.Class))
 g.add((BASE.ServiceCategory, RDFS.label, Literal("Service Category", lang="en")))
 
+g.add((BASE.RequirementLevel, RDF.type, SKOS.ConceptScheme))
+for cid, label in [("Mandatory","Mandatory indicator"),
+                   ("Recommended","Recommended indicator"),
+                   ("Optional","Optional indicator")]:
+    c = BASE[cid]
+    g.add((c, RDF.type, SKOS.Concept))
+    g.add((c, SKOS.prefLabel, Literal(label, lang="en")))
+    g.add((c, SKOS.inScheme, BASE.RequirementLevel))
 
 # Define a set of tool types
 tool_types = {
@@ -185,7 +195,8 @@ for prop, uri in properties.items():
 
 # === LOAD DATA ===
 df = pd.read_csv(input_url)
-print(df.head())
+# save to file
+df.to_csv("kpi_input.csv", index=False)
 
 # === CONVERT EACH ROW ===
 for n, row in df.iterrows():
