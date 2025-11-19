@@ -2,6 +2,7 @@
 @prefix owl:   <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix dct:   <http://purl.org/dc/terms/> .
+@prefix voaf:  <http://purl.org/vocommons/voaf#> .
 @prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
 @prefix foaf:  <http://xmlns.com/foaf/0.1/> .
 @prefix sosa:  <http://www.w3.org/ns/sosa/> .
@@ -11,24 +12,33 @@
 @prefix edam:  <http://edamontology.org/> .
 
 
-<http://w3id.org/RIMO> a owl:Ontology ;
+<http://w3id.org/RIMO> a owl:Ontology, voaf:Vocabulary ;
     dct:contributor "BioHackathon Europe 2025 METRICS Team"@en ;
     dct:creator "Julia Koblitz"@en ;
     dct:description """An ontology for representing and harmonising Key Performance Indicators across research infrastructures 
 and life science services. It defines classes and properties to describe indicators, measurement methods, relevance, 
 and applicable service categories. First developed during the BioHackathon Europe 2025."""@en ;
     dct:issued "2025-11-05"^^xsd:date ;
+    dct:modified "2025-11-06"^^xsd:date ;
     dct:language "en" ;
     dct:license <http://creativecommons.org/licenses/by/4.0/> ;
     dct:title "Research Infrastructure Metrics Ontology (RIMO)"@en ;
+    dct:publisher "BioHackathon Europe"@en ;
+    dct:relation <http://edamontology.org/> , <https://schema.org/> , <https://bio.tools/> ;
     owl:versionInfo "0.2.0" .
 
 ### Core classes
 rimo:KPI              a owl:Class ; rdfs:label "KPI"@en .
 rimo:KPIValue         a owl:Class ; rdfs:label "KPI value"@en .
 rimo:ServiceCategory     a owl:Class ; rdfs:label "Service Category"@en ; rdfs:comment "Aligned to bio.tools toolType / EDAM where possible."@en .
+
+# Helpful pointers for consumers: related vocabularies and tooling registries
+rimo:ServiceCategory rdfs:seeAlso <http://edamontology.org/> , <https://bio.tools/> .
 rimo:MeasurementMeans a owl:Class ; rdfs:label "Means of Measurement"@en ; rdfs:subClassOf sosa:Procedure .
 rimo:AutomationTool   a owl:Class ; rdfs:label "Automation Tool"@en ; rdfs:subClassOf schema:SoftwareApplication .
+
+# Example alignment: indicate a close mapping to Schema.org's SoftwareApplication using SKOS
+rimo:AutomationTool skos:closeMatch schema:SoftwareApplication .
 
 ### Annotations on KPI (from your sheet)
 rimo:KPIName        a owl:AnnotationProperty ; rdfs:subPropertyOf rdfs:label .

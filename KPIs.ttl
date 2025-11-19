@@ -3,6 +3,7 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix rimo: <http://w3id.org/RIMO#> .
+@prefix voaf: <http://purl.org/vocommons/voaf#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 rimo:ActionsPerVisit a rimo:KPI ;
@@ -230,8 +231,10 @@ rimo:Visits a rimo:KPI ;
         <http://w3id.org/RIMO#agent/Network>,
         <http://w3id.org/RIMO#agent/ServiceProvider> .
 
-<http://w3id.org/RIMO-data> a owl:Ontology ;
+<http://w3id.org/RIMO-data> a owl:Ontology, voaf:Vocabulary ;
     dct:title "RIMO KPI Instances"@en ;
+    dct:creator "BioHackathon Europe 2025 METRICS Team"@en ;
+    dct:modified "2025-11-06"^^xsd:date ;
     owl:imports <http://w3id.org/RIMO> .
 
 <http://w3id.org/RIMO#tool/TicketSystem> a rimo:AutomationTool ;

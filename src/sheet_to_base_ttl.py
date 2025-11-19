@@ -21,7 +21,7 @@ data.bind("rimo", RIMO)
 
 # Add owl:imports triple
 ONTO = URIRef("http://w3id.org/RIMO")   # must match ontology IRI in BASE.ttl
-DATA_ONTO = URIRef("http://w3id.org/RIMO-data")
+DATA_ONTO = URIRef("http://w3id.org/RIMOkpi")
 data.add((DATA_ONTO, RDF.type, OWL.Ontology))
 data.add((DATA_ONTO, OWL.imports, ONTO))
 data.add((DATA_ONTO, DCTERMS.title, Literal("RIMO KPI Instances", lang="en")))
